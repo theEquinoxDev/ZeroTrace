@@ -4,14 +4,14 @@ import { v4 as uuidv4 } from "uuid";
 
 export const getRooms = async (req, res) => {
   try {
-    const rooms = await RoomModel.find({ visibility: "public" })
-      .select("roomId name");
-
+    const rooms = await RoomModel.find().select("roomId name visibility inviteCode");
     res.json(rooms);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
+
 
 export const createRoom = async (req, res) => {
   try {
