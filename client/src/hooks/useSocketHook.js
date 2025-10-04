@@ -12,42 +12,52 @@ export default function useSocketHook() {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
+    if (!currentRoom) return;
+    const stored = sessionStorage.getItem(`messages_${currentRoom.roomId}`);
+    if (stored) setMessages(JSON.parse(stored));
+  }, [currentRoom]);
+
+  useEffect(() => {
     if (!currentRoom || !session) return;
 
     const s = io(SOCKET_URL);
     setSocket(s);
 
-    console.log("Joining room:", currentRoom.roomId, session);
-
-    s.emit("join_room", { roomId: currentRoom.roomId, session });
+    s.emit("join_room", { roomId: currentRoom.roomId, sessionId: session.sessionId });
 
     s.on("connect", () => console.log("Socket connected:", s.id));
 
     s.on("receive_message", (msg) => {
-      setMessages((prev) => [...prev, msg]);
+      setMessages((prev) => {
+        const updated = [...prev, msg];
+        sessionStorage.setItem(`messages_${currentRoom.roomId}`, JSON.stringify(updated));
+        return updated;
+      });
     });
 
     s.on("system_message", (msg) => {
-      setMessages((prev) => [...prev, msg]);
+      setMessages((prev) => {
+        const updated = [...prev, msg];
+        sessionStorage.setItem(`messages_${currentRoom.roomId}`, JSON.stringify(updated));
+        return updated;
+      });
     });
 
     return () => {
-      s.emit("leave_room", { roomId: currentRoom.roomId, session });
+      s.emit("leave_room", { roomId: currentRoom.roomId, sessionId: session.sessionId });
       s.disconnect();
+      sessionStorage.removeItem(`messages_${currentRoom.roomId}`);
     };
   }, [currentRoom, session]);
 
   const sendMessage = (content) => {
     if (!socket || !currentRoom || !session) return;
 
-    const msg = {
-      content,
+    socket.emit("send_message", {
       roomId: currentRoom.roomId,
       sessionId: session.sessionId,
-      nickname: session.nickname || "Anonymous",
-    };
-
-    socket.emit("send_message", msg);
+      content,
+    });
   };
 
   return { messages, sendMessage };
