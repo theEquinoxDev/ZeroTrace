@@ -5,7 +5,6 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import sessionRoutes from "./routes/sessions.js";
 import roomRoutes from "./routes/rooms.js";
-import moderationRoutes from "./routes/moderation.js";
 import socketHandler from "./socket.js";
 
 connectDB();
@@ -17,7 +16,6 @@ app.use(express.json());
 
 app.use("/api", sessionRoutes);
 app.use("/api", roomRoutes);
-app.use("/api", moderationRoutes);
 
 app.get("/", (req, res) => {
   res.send("API is running...");
