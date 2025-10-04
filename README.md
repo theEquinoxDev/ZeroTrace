@@ -265,4 +265,9 @@ This project is licensed under MIT. See [LICENSE](./LICENSE) for details.
 - React Toastify
 - Lucide React Icons
 - Zustand
-- DiceBear Avatars
+
+---
+
+<p align="center">
+  Made with ❤️ by <a href="https://github.com/theEquinoxDev">theEquinoxDev</a>
+</p>
