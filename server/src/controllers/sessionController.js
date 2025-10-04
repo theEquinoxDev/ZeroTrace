@@ -5,7 +5,6 @@ export const createSession = async (req, res) => {
   try {
     let { nickname } = req.body;
 
-    // Generate sessionId
     const sessionId = uuidv4();
 
     if (!nickname || nickname.trim() === "") {
@@ -13,7 +12,8 @@ export const createSession = async (req, res) => {
       nickname = `Anon-${randomSuffix}`;
     }
 
-    const avatar = `https://avatars.dicebear.com/api/identicon/${sessionId}.svg`;
+    const avatar = `https://avatars.dicebear.com/v4/identicon/${sessionId}.svg`;
+
 
     const session = new SessionModel({
       sessionId,
