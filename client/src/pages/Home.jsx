@@ -11,9 +11,14 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
-      <h1 className="text-3xl font-bold mb-6">Welcome to Chat App</h1>
-      <button onClick={handleEnter} className="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-100 to-purple-200">
+      <h1 className="text-4xl md:text-5xl font-extrabold mb-8 text-indigo-800 text-center">
+        Welcome to ZeroTrace
+      </h1>
+      <button
+        onClick={handleEnter}
+        className="bg-indigo-600 text-white px-8 py-4 rounded-2xl text-lg font-semibold shadow-lg hover:bg-indigo-700 transition"
+      >
         Enter
       </button>
     </div>
