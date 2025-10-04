@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useRoomStore from "../stores/roomStore";
-import { getRooms, createRoom } from "../api/roomApi";
+import { getRooms } from "../api/roomApi";
+import RoomForm from "./RoomForm";
+import { toast } from "react-toastify";
+import { Lock, Unlock } from "lucide-react";
 
 export default function Rooms() {
   const [loading, setLoading] = useState(true);
-  const [roomName, setRoomName] = useState("");
   const rooms = useRoomStore((state) => state.rooms);
   const setRooms = useRoomStore((state) => state.setRooms);
   const setCurrentRoom = useRoomStore((state) => state.setCurrentRoom);
@@ -17,7 +19,7 @@ export default function Rooms() {
         const data = await getRooms();
         setRooms(data);
       } catch (err) {
-        console.error(err);
+        toast.error("Failed to load rooms");
       } finally {
         setLoading(false);
       }
@@ -26,56 +28,55 @@ export default function Rooms() {
   }, []);
 
   const handleJoin = (room) => {
+    if (room.visibility === "private") {
+      const code = prompt("Enter invite code");
+      if (!code) return toast.error("Invite code required");
+      if (code !== room.inviteCode) return toast.error("Invalid invite code");
+    }
     setCurrentRoom(room);
     navigate(`/room/${room.roomId}`);
   };
 
-  const handleCreate = async () => {
-    if (!roomName.trim()) return;
-    try {
-      const room = await createRoom({ name: roomName, visibility: "public" });
-      setCurrentRoom(room);
-      setRooms([...rooms, room]);
-      navigate(`/room/${room.roomId}`);
-    } catch (err) {
-      console.error(err);
-      alert("Could not create room");
-    }
+  const handleCreated = (room) => {
+    setRooms([...rooms, room]);
+    setCurrentRoom(room);
+    navigate(`/room/${room.roomId}`);
   };
 
   return (
-    <div className="min-h-screen p-6 flex flex-col items-center">
-      <div className="w-full max-w-2xl bg-white p-6 rounded shadow">
-        <h2 className="text-xl font-bold mb-4">Available Rooms</h2>
+    <div className="min-h-screen p-6 flex flex-col items-center bg-gray-50">
+      <div className="w-full max-w-2xl bg-white p-6 rounded-xl shadow-md flex flex-col gap-6">
+        <h2 className="text-2xl font-bold">Available Rooms</h2>
         {loading ? (
-          <p>Loading rooms...</p>
+          <p className="text-gray-500">Loading rooms...</p>
+        ) : rooms.length === 0 ? (
+          <p className="text-gray-500">No rooms available. Create one below!</p>
         ) : (
-          <ul className="mb-4">
+          <ul className="flex flex-col gap-3">
             {rooms.map((room) => (
-              <li key={room.roomId} className="flex justify-between items-center py-2 border-b">
-                <div>
-                  <div className="font-medium">{room.name}</div>
-                  <div className="text-sm text-gray-500">{room.visibility}</div>
+              <li
+                key={room.roomId}
+                className="flex justify-between items-center p-3 border rounded-lg hover:bg-gray-50 transition"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="font-medium">{room.name}</span>
+                  {room.visibility === "private" ? (
+                    <Lock className="text-red-500 w-4 h-4" />
+                  ) : (
+                    <Unlock className="text-green-500 w-4 h-4" />
+                  )}
                 </div>
-                <button onClick={() => handleJoin(room)} className="bg-green-500 text-white px-3 py-1 rounded">
+                <button
+                  onClick={() => handleJoin(room)}
+                  className="bg-indigo-600 text-white px-4 py-2 rounded-xl hover:bg-indigo-700 transition"
+                >
                   Join
                 </button>
               </li>
             ))}
           </ul>
         )}
-        <div className="flex mt-4">
-          <input
-            type="text"
-            value={roomName}
-            onChange={(e) => setRoomName(e.target.value)}
-            placeholder="New room name"
-            className="flex-1 p-2 border rounded mr-2"
-          />
-          <button onClick={handleCreate} className="bg-blue-600 text-white px-4 rounded">
-            Create
-          </button>
-        </div>
+        <RoomForm onCreated={handleCreated} />
       </div>
     </div>
   );
