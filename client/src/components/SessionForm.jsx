@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useSessionStore from "../stores/sessionStore";
 import { createSession } from "../api/sessionApi";
+import { toast } from "react-toastify";
 
 export default function SessionForm() {
   const [nickname, setNickname] = useState("");
@@ -15,29 +16,34 @@ export default function SessionForm() {
     try {
       const data = await createSession(nickname.trim() || null);
       setSession(data);
+      toast.success("Session created successfully");
       navigate("/rooms");
     } catch (err) {
       console.error(err);
-      alert("Could not create session");
+      toast.error("Could not create session");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-sm mx-auto p-4 border rounded-md shadow-md">
-      <label className="block mb-2 font-semibold">Enter your nickname (optional)</label>
+    <form 
+      onSubmit={handleSubmit} 
+      className="max-w-md mx-auto mt-20 p-6 bg-white rounded-xl shadow-lg flex flex-col gap-4"
+    >
+      <h2 className="text-2xl font-bold text-center">Join Chat</h2>
+      <label className="font-medium">Enter your nickname (optional)</label>
       <input
         type="text"
         value={nickname}
         onChange={(e) => setNickname(e.target.value)}
         placeholder="Nickname"
-        className="w-full p-2 border rounded mb-4"
+        className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400"
       />
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 disabled:opacity-50"
+        className="w-full bg-indigo-600 text-white py-3 rounded-xl hover:bg-indigo-700 transition disabled:opacity-50"
       >
         {loading ? "Creating..." : "Join Chat"}
       </button>
