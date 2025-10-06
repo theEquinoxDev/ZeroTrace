@@ -63,8 +63,7 @@
 
 ## Live Demo
 
-> Add your deployed demo URL here  
-> Example: [https://zerotrace.example.com](https://zerotrace.example.com)
+> [https://zerotrace-chat.vercel.app/](https://zerotrace-chat.vercel.app/)
 
 ---
 
