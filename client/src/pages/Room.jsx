@@ -51,17 +51,20 @@ export default function Room() {
     toast.success("Invite link copied");
   };
 
-  if (loading) return <p className="text-center mt-10 text-lg text-gray-600">Loading room...</p>;
+  if (loading)
+    return (
+      <p className="text-center mt-10 text-lg text-gray-400">Loading room...</p>
+    );
 
   return (
-    <div className="min-h-screen p-6 flex flex-col items-center bg-gradient-to-br from-indigo-50 to-purple-50">
+    <div className="min-h-screen p-6 flex flex-col items-center bg-gradient-to-br from-black via-neutral-900 to-neutral-800">
       {currentRoom && (
         <div className="w-full max-w-3xl flex flex-col gap-4">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-3xl font-bold text-indigo-700">{currentRoom.name}</h2>
+            <h2 className="text-3xl font-bold text-gray-100">{currentRoom.name}</h2>
             <button
               onClick={handleCopyLink}
-              className="bg-indigo-600 text-white px-4 py-2 rounded-lg shadow hover:bg-indigo-700 transition"
+              className="bg-gray-700 text-white px-4 py-2 rounded-2xl shadow hover:bg-gray-600 transition"
             >
               Copy Invite Link
             </button>
