@@ -9,7 +9,7 @@ export default function ChatWindow({ messages, sendMessage }) {
   }, [messages]);
 
   return (
-    <div className="flex flex-col flex-1 border rounded-xl p-4 h-[500px] overflow-y-auto bg-white shadow-md">
+    <div className="flex flex-col flex-1 border border-gray-700 rounded-2xl p-4 h-[500px] overflow-y-auto bg-gradient-to-br from-neutral-900 via-black to-neutral-800 shadow-lg">
       <div className="flex flex-col gap-3">
         {messages.map((msg, idx) => (
           <div
@@ -22,18 +22,18 @@ export default function ChatWindow({ messages, sendMessage }) {
               <img
                 src={msg.avatar}
                 alt="avatar"
-                className="w-8 h-8 rounded-full border border-gray-300"
+                className="w-8 h-8 rounded-full border border-gray-600"
               />
             ) : (
-              <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-sm font-semibold text-white">
+              <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-sm font-semibold text-white">
                 {msg.nickname?.charAt(0)?.toUpperCase() || "A"}
               </div>
             )}
             <div
-              className={`px-3 py-2 rounded-lg max-w-[80%] break-words ${
+              className={`px-3 py-2 rounded-xl max-w-[80%] break-words ${
                 msg.nickname === "Anonymous"
-                  ? "bg-gray-100 text-gray-800"
-                  : "bg-indigo-100 text-indigo-900"
+                  ? "bg-gray-800 text-gray-100"
+                  : "bg-gray-700 text-white"
               }`}
             >
               <span className="font-semibold mr-1">{msg.nickname}:</span>
