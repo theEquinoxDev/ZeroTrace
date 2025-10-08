@@ -4,16 +4,18 @@ export default function NotFound() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-red-100 to-pink-200">
-      <h1 className="text-4xl md:text-5xl font-extrabold mb-6 text-red-700 text-center">
-        404 - Page Not Found
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-black via-neutral-900 to-gray-950 text-white">
+      <h1 className="text-4xl md:text-5xl font-extrabold mb-6 text-center bg-gradient-to-r from-gray-100 to-gray-400 bg-clip-text text-transparent">
+        404 — Page Not Found
       </h1>
-      <p className="mb-6 text-lg text-red-600 text-center">
-        Oops! The page you are looking for does not exist.
+
+      <p className="mb-8 text-gray-400 text-lg text-center max-w-md">
+        Oops! The page you’re looking for doesn’t exist or has been moved.
       </p>
+
       <button
         onClick={() => navigate("/")}
-        className="bg-red-600 text-white px-8 py-4 rounded-2xl text-lg font-semibold shadow-lg hover:bg-red-700 transition"
+        className="bg-gradient-to-r from-gray-200 to-gray-400 text-black px-8 py-3 rounded-2xl text-lg font-semibold shadow-lg hover:scale-105 transition-all duration-300"
       >
         Go Home
       </button>
