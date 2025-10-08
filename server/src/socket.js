@@ -74,6 +74,20 @@ const socketHandler = (server) => {
         console.error("send_message error:", err);
       }
     });
+    socket.on("typing", async ({ roomId, sessionId, isTyping }) => {
+  try {
+    const session = await SessionModel.findOne({ sessionId });
+    if (!session) return;
+
+    socket.to(roomId).emit("user_typing", {
+      nickname: session.nickname,
+      isTyping,
+    });
+  } catch (err) {
+    console.error("typing error:", err);
+  }
+});
+
 
     socket.on("disconnect", () => console.log("Socket disconnected:", socket.id));
   });
