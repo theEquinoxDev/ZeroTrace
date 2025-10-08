@@ -27,23 +27,27 @@ export default function SessionForm() {
   };
 
   return (
-    <form 
-      onSubmit={handleSubmit} 
-      className="max-w-md mx-auto mt-20 p-6 bg-white rounded-xl shadow-lg flex flex-col gap-4"
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-md mx-auto mt-20 p-6 bg-gradient-to-br from-black via-neutral-900 to-gray-950 rounded-2xl shadow-lg flex flex-col gap-4 border border-gray-800"
     >
-      <h2 className="text-2xl font-bold text-center">Join Chat</h2>
-      <label className="font-medium">Enter your nickname (optional)</label>
+      <h2 className="text-2xl font-bold text-center text-gray-200">
+        Join Chat
+      </h2>
+
+      <label className="font-medium text-gray-300">Enter your nickname (optional)</label>
       <input
         type="text"
         value={nickname}
         onChange={(e) => setNickname(e.target.value)}
         placeholder="Nickname"
-        className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400"
+        className="w-full p-3 bg-neutral-900 text-gray-200 placeholder-gray-500 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-400"
       />
+
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-indigo-600 text-white py-3 rounded-xl hover:bg-indigo-700 transition disabled:opacity-50"
+        className="w-full bg-gradient-to-r from-gray-200 to-gray-400 text-black py-3 rounded-xl font-semibold shadow-md hover:scale-105 transition-all duration-300 disabled:opacity-50"
       >
         {loading ? "Creating..." : "Join Chat"}
       </button>
